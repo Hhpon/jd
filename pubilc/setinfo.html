@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id='app'>
+        <div>姓名</div>
+        <input type="text" v-model='name'>
+        <div>身份证号</div>
+        <input type="number" v-model='number'>
+        <button v-on:click='submit'>提交</button>
+        <div v-for='todo in article'>
+            <div>姓名:{{todo.name}}</div>
+            <div>身份证：{{todo.number}}</div>
+            <button v-on:click='del(todo._id)'>删除</button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                name: '',
+                number: null,
+                article: []
+            },
+            methods: {
+                submit: function () {
+                    let that = this
+                    console.log(that.number)
+                    axios.post('/sendArticle', {
+                        name: that.name,
+                        number: that.number,
+                        setTime: new Date().getTime()
+                    }).then(function (res) {
+                        that.getAtticle()
+                    })
+                },
+                getAtticle: function () {
+                    let that = this
+                    axios.get('/getArticle1', {}).then(function (res) {
+                        console.log(res)
+                        that.article = res.data
+                    })
+                },
+                del: function (res) {
+                    let that = this
+                    axios.post('/delete', {
+                        id: res
+                    }).then(function (res) {
+                        that.article = res.data
+                    })
+                }
+            },
+
+            mounted() {
+                this.getAtticle()
+            },
+
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+
+    <div id="app">
+        <img src="./images/1.jpg"
+            style="background-repeat: no-repeat; height: 100vh; width: 100vw; z-index: 1;position:absolute" alt="">
+        <img src="./images/2.png" alt="" style="z-index: 2;position:absolute; height: 95vh; width: 100vw;">
+        <img src="./images/jd03.png"
+            style="z-index: 3; position: relative; top: 25vh; left: 8.3vw; width: 20vw; height: 70vh;">
+        <img src="./images/sy.png"
+            style="z-index: 3; position: relative; height: 7vh; width: 24vw; top:-45vh; left: -9vw; ">
+        <img src="./images/tb.png"
+            style="position: relative; z-index:3; height: 5vh; width: 5vh; top:-33vh; left: -11vw;">Î
+        <img src="./images/sy01.png"
+            style="z-index: 3; position: relative; height: 6vh; width: 13vw; top: -32vh; left: -10.5vw;" alt="">
+        <div v-if='show'
+            style="display: flex; flex-direction:column; align-items: center; justify-content:space-between; z-index: 3; position: relative; margin-top: -30vh; margin-left: 30vw; height: 28vh; width: 52vw;">
+            <div>
+                <img src="./images/sy02.png" style='z-index: 3; position: relative; height: 4vh; width: 15vw;' alt="">
+            </div>
+            <div>
+                <label for="select"
+                    style="z-index: 3; position: relative; width: 15vw; height: 10vh; color: rgb(102, 102, 102);">证件类型：</label>
+                <select id="select" style="z-index: 3; position: relative; width: 15vw; height: 3vh;">
+                    <option>居民身份证</option>
+                </select>
+            </div>
+            <div style="display: flex;">
+                <div style="z-index: 3; position: relative; color: rgb(102, 102, 102);">
+                    证件号码：</div>
+                <input type="number" v-model='number'
+                    style="z-index: 3; position: relative; width: 14.8vw; height: 2vh; ">
+            </div>
+            <button v-on:click='find'
+                style="background-color: red; color:white; z-index: 3; position: relative; height: 5vh; width: 10vw; font-size: 150%;">查
+                询</button>
+        </div>
+        <div v-if='show1' style="margin-top:-27vh; margin-left:33vw">
+            <img src="./images/3.png" style="position: relative; z-index:3; height: 15vh; width: 54vw;" alt="">
+        </div>
+        <div v-if='show2' style="display: flex; z-index: 4; position: relative; margin-top:-6vh; margin-left:34vw">
+            <div style="height: 4vh; width:12vw; text-align: center; border-right: solid 1px black;">{{name}}</div>
+            <div style="height: 4vh; width:15vw; text-align: center; margin-left: 3vw; border-right: solid 1px black; padding-right: 3vw;">福祥.金卡</div>
+            <div style="height: 4vh; width:8vw; text-align: center; margin-left: 5vw; border-right: solid 1px black; padding-right: 5vw;">审批已通过</div>
+        </div>
+        <div v-if='show3' style="display: flex; z-index: 4; position: relative; margin-top:-6vh; margin-left:34vw;">
+            <div style="text-align: center; height: 3vh; width: 52vw;">抱歉，暂未查询到相关信息～</div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        var app = new Vue({
+            el: "#app",
+            data: {
+                name:'',
+                number: '',
+                cool:'',
+                show: true,
+                show1: false,
+                show2: false,
+                show3: false
+            },
+            methods: {
+                find: function () {
+                    let that = this
+                    let number = this.number
+                    axios.get("/getArticle", {
+                        params: {
+                            number: number
+                        }
+                    }).then(function (res) {
+                        if (res.data.length !== 0) {
+                            that.show = false
+                            that.show1 = true
+                            that.show2 = true
+                            that.name = res.data[0].name
+                            let time =new Date().getTime() - res.data[0].time
+                            // console.log(time)
+                            // if(time <= 259200000){
+                            //     that.cool = '复审中'
+                            // }
+                            // if(time > 259200000){
+                            //     that.cool = '卡已发放请耐心等待。'
+                            // }
+                        } if (res.data.length === 0) {
+                            that.show = false
+                            that.show1 = true
+                            that.show3 = true
+                        }
+                    });
+                }
+            },
+            mounted() {
+            },
+        });
+    </script>
+</body>
+
+
+</html>
