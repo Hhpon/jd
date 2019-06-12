@@ -10,12 +10,24 @@
 
 <body>
     <div id='app'>
-        <div>姓名</div>
-        <input type="text" v-model='name'>
-        <div>身份证号</div>
-        <input type="text" v-model='number'>
-        <button v-on:click='submit'>提交</button>
-        <div v-for='todo in article'>
+        <div style="display: flex;">
+            <div>
+                <div>姓名</div>
+                <input type="text" v-model='name'>
+                <div>身份证号</div>
+                <input type="text" v-model='number'>
+                <button v-on:click='submit'>提交</button>
+            </div>
+
+            <div style="margin-left: 10vw;">
+                <div>姓名或身份证号</div>
+                <input type="text" v-model='info'>
+                <button v-on:click='search'>查询</button>
+            </div>
+
+        </div>
+
+        <div v-if='show' v-for='todo in article'>
             <div>姓名:{{todo.name}}</div>
             <div>身份证：{{todo.number}}</div>
             <button v-on:click='del(todo._id)'>删除</button>
@@ -29,6 +41,8 @@
             data: {
                 name: '',
                 number: null,
+                info: null,
+                show: true,
                 article: []
             },
             methods: {
@@ -55,6 +69,16 @@
                     axios.post('/delete', {
                         id: res
                     }).then(function (res) {
+                        that.article = res.data
+                    })
+                },
+                search: function () {
+                    let that = this
+                    let info = this.info
+                    axios.post('/search', {
+                        info: info
+                    }).then(function (res) {
+                        console.log(res)
                         that.article = res.data
                     })
                 }

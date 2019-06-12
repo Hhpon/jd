@@ -57,6 +57,15 @@ app.post('/delete', function (req, res) {  // 新建的路由，以及此路由�
     });
 })
 
-
+app.post('/search', function (req, res) {
+    Article.find({
+        $or: [ //多条件，数组
+            { name: { $regex: req.body.info } },
+            { number: { $regex: req.body.info } }
+        ]
+    }, (err, doc) => {
+        res.send(doc)
+    });
+})
 
 app.listen(3011, function () { console.log('服务器正在监听 3011 端口') });
