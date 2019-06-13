@@ -15,13 +15,23 @@
             style="background-repeat: no-repeat; height: 100vh; width: 100vw; z-index: 1;position:absolute" alt="">
         <img src="./images/2.png" alt="" style="z-index: 2;position:absolute; height: 95vh; width: 100vw;">
         <img src="./images/jd03.png"
-            style="z-index: 3; position: relative; top: 25vh; left: 8.3vw; width: 20vw; height: 70vh;">
-        <img src="./images/sy.png"
-            style="z-index: 3; position: relative; height: 7vh; width: 24vw; top:-45vh; left: -9vw; ">
-        <img src="./images/tb.png"
-            style="position: relative; z-index:3; height: 5vh; width: 5vh; top:-33vh; left: -11vw;">Î
-        <img src="./images/sy01.png"
-            style="z-index: 3; position: relative; height: 6vh; width: 13vw; top: -32vh; left: -10.5vw;" alt="">
+            style="z-index: 3; position: relative; top: 25vh; left: 8.3vw; width: 12vw; height: 70vh;">
+        <!-- <img src="./images/sy.png"
+            style="z-index: 3; position: relative; height: 7vh; width: 24vw; top:-45vh; left: -9vw; "> -->
+        <div
+            style="display: flex; z-index: 3; position: relative; top: -51.5vh; left: 11vw; height: 5vh; width: 53vw; font-size: 140%; color: #bababa;">
+            您所在的位置：首页 <div style="line-height: 4vh;">></div> 信用卡进度查询</div>
+        <div style="display: flex; justify-content: space-between; z-index: 3; position: relative; top: -41vh; left: 32vw; height: 5vh; width: 55vw;">
+            <div style="display: flex; z-index: 3; position: relative">
+                <img src="./images/前进.png" style="height: 5vh; width: 5vh;">
+                <div style="color:#bababa; font-size:160%; line-height: 5.5vh;">申请进度查询</div>
+            </div>
+
+            <div style="color: #bababa; display: flex; align-self: flex-end;" v-on:click='back' v-if='show4'>
+                <img src="./images/返回.png" style="height: 3vh; width:3vh; align-self: center;" alt="">
+                <div style="line-height: 5vh;">返回</div>
+            </div>
+        </div>
         <div v-if='show'
             style="display: flex; flex-direction:column; align-items: center; justify-content:space-between; z-index: 3; position: relative; margin-top: -30vh; margin-left: 30vw; height: 28vh; width: 52vw;">
             <div>
@@ -49,8 +59,12 @@
         </div>
         <div v-if='show2' style="display: flex; z-index: 4; position: relative; margin-top:-6vh; margin-left:34vw">
             <div style="height: 4vh; width:12vw; text-align: center; border-right: solid 1px black;">{{name}}</div>
-            <div style="height: 4vh; width:15vw; text-align: center; margin-left: 3vw; border-right: solid 1px black; padding-right: 3vw;">福祥.金卡</div>
-            <div style="height: 4vh; width:8vw; text-align: center; margin-left: 5vw; border-right: solid 1px black; padding-right: 5vw;">审批已通过</div>
+            <div
+                style="height: 4vh; width:15vw; text-align: center; margin-left: 3vw; border-right: solid 1px black; padding-right: 3vw;">
+                福祥.金卡</div>
+            <div
+                style="height: 4vh; width:8vw; text-align: center; margin-left: 5vw; border-right: solid 1px black; padding-right: 5vw;">
+                审批已通过</div>
         </div>
         <div v-if='show3' style="display: flex; z-index: 4; position: relative; margin-top:-6vh; margin-left:34vw;">
             <div style="text-align: center; height: 3vh; width: 52vw;">抱歉，暂未查询到相关信息～</div>
@@ -62,13 +76,14 @@
         var app = new Vue({
             el: "#app",
             data: {
-                name:'',
+                name: '',
                 number: '',
-                cool:'',
+                cool: '',
                 show: true,
                 show1: false,
                 show2: false,
-                show3: false
+                show3: false,
+                show4: false
             },
             methods: {
                 find: function () {
@@ -83,8 +98,9 @@
                             that.show = false
                             that.show1 = true
                             that.show2 = true
+                            that.show4 = true
                             that.name = res.data[0].name
-                            let time =new Date().getTime() - res.data[0].time
+                            let time = new Date().getTime() - res.data[0].time
                             // console.log(time)
                             // if(time <= 259200000){
                             //     that.cool = '复审中'
@@ -96,8 +112,16 @@
                             that.show = false
                             that.show1 = true
                             that.show3 = true
+                            that.show4 = true
                         }
                     });
+                },
+                back: function () {
+                    this.show = true
+                    this.show1 = false
+                    this.show2 = false
+                    this.show3 = false
+                    this.show4 = false
                 }
             },
             mounted() {
